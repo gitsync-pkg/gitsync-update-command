@@ -1,0 +1,28 @@
+{
+  "name": "@gitsync/update-command",
+  "version": "0.1.0",
+  "description": "Sync the commits from relative repository to current repository.",
+  "keywords": [
+    "gitsync",
+    "update",
+    "command"
+  ],
+  "author": "twinh <twinhuang@qq.com>",
+  "homepage": "https://github.com/twinh/gitsync#readme",
+  "license": "MIT",
+  "main": "index.ts",
+  "files": [
+    "index.ts"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/twinh/gitsync.git"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "@gitsync/sync": "^0.1.0",
+    "@gitsync/config": "^0.1.0"
+  }
+}
