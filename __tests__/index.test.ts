@@ -18,8 +18,8 @@ describe('update command', () => {
     await source.addFile('.gitsync.json', JSON.stringify({
       repos: [
         {
-          dir: 'package-name',
-          remote: target.dir,
+          paths: 'package-name',
+          repo: target.dir,
         }
       ]
     }));
