@@ -23,7 +23,7 @@ command.builder = {
 
 command.handler = async (argv: UpdateArguments) => {
   const config = new Config();
-  const target: string = config.getRepoByPath(argv.dir);
+  const target: string = config.getRepoByDir(argv.dir);
 
   const cwd = process.cwd();
   process.chdir(target);
@@ -33,8 +33,8 @@ command.handler = async (argv: UpdateArguments) => {
     $0: '',
     _: [],
     target: cwd,
-    sourcePath: '.',
-    targetPath: argv.dir,
+    sourceDir: '.',
+    targetDir: argv.dir,
   });
 
   process.chdir(cwd);

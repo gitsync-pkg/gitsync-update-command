@@ -15,11 +15,11 @@ describe('update command', () => {
     const source = await createRepo();
     const target = await createRepo();
 
-    await source.addFile('.gitsync.json', JSON.stringify({
+    await source.commitFile('.gitsync.json', JSON.stringify({
       repos: [
         {
-          paths: 'package-name',
-          repo: target.dir,
+          sourceDir: 'package-name',
+          target: target.dir,
         }
       ]
     }));
