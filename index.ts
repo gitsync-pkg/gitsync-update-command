@@ -3,7 +3,7 @@ import Sync from '@gitsync/sync';
 import {Config} from '@gitsync/config';
 
 interface UpdateArguments extends Arguments {
-  dir: string
+  sourceDir: string
 }
 
 let command: CommandModule = {
@@ -11,7 +11,7 @@ let command: CommandModule = {
   }
 };
 
-command.command = 'update <dir>';
+command.command = 'update <source-dir>';
 
 command.describe = 'Sync the commits from relative repository to current repository';
 
@@ -23,7 +23,9 @@ command.builder = {
 
 command.handler = async (argv: UpdateArguments) => {
   const config = new Config();
-  const target: string = config.getRepoByDir(argv.dir);
+  config.checkFileExist();
+
+  const target: string = config.getRepoByDir(argv.sourceDir);
 
   const cwd = process.cwd();
   process.chdir(target);
@@ -34,7 +36,7 @@ command.handler = async (argv: UpdateArguments) => {
     _: [],
     target: cwd,
     sourceDir: '.',
-    targetDir: argv.dir,
+    targetDir: argv.sourceDir,
   });
 
   process.chdir(cwd);
