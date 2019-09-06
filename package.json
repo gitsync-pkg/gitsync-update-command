@@ -22,7 +22,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@gitsync/sync": "^0.1.0",
-    "@gitsync/config": "^0.1.0"
+    "@gitsync/config": "^0.1.0",
+    "@gitsync/sync": "^0.1.0"
   }
 }
