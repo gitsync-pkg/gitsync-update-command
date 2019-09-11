@@ -25,7 +25,7 @@ command.handler = async (argv: UpdateArguments) => {
   const config = new Config();
   config.checkFileExist();
 
-  const target: string = config.getRepoByDir(argv.sourceDir);
+  const target: string = config.getRepoBySourceDir(argv.sourceDir);
 
   const cwd = process.cwd();
   process.chdir(target);
