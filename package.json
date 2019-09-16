@@ -43,6 +43,7 @@
     "@gitsync/config": "gitsync-pkg/gitsync-config",
     "@gitsync/sync": "gitsync-pkg/gitsync-sync",
     "@gitsync/test": "gitsync-pkg/gitsync-test",
-    "@gitsync/log": "gitsync-pkg/gitsync-log"
+    "@gitsync/log": "gitsync-pkg/gitsync-log",
+    "git-cli-wrapper": "twinh/git-cli-wrapper"
   }
 }
