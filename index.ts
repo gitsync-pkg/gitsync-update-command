@@ -1,10 +1,13 @@
-import * as fs from 'fs';
 import {Arguments, CommandModule} from 'yargs';
 import Sync from '@gitsync/sync';
 import {Config, ConfigRepo} from '@gitsync/config';
+import log from "@gitsync/log";
+import theme from "chalk-theme";
 
 interface UpdateArguments extends Arguments {
   sourceDir: string
+  include: string[]
+  exclude: string[]
 }
 
 let command: CommandModule = {
@@ -12,39 +15,73 @@ let command: CommandModule = {
   }
 };
 
-command.command = 'update <source-dir>';
+command.command = 'update [source-dir]';
 
 command.describe = 'Sync the commits from relative repository to current repository';
 
 command.builder = {
-  dir: {
-    describe: 'The subdirectory in current repository',
+  'source-dir': {
+    describe: 'Include only source directory matching the given glob, use --include if require multi globs',
+    default: '',
+    type: 'string',
+  },
+  include: {
+    describe: 'Include only source directory matching the given glob',
+    default: [],
+    type: 'array',
+  },
+  exclude: {
+    describe: 'Exclude source directory matching the given glob',
+    default: [],
+    type: 'array',
   }
 };
 
 command.handler = async (argv: UpdateArguments) => {
+  argv.include || (argv.include = []);
+  argv.exclude || (argv.exclude = []);
+
   const config = new Config();
   config.checkFileExist();
 
-  const repo: ConfigRepo = config.getRepoBySourceDir(argv.sourceDir);
-  const repoDir = await config.getRepoDirByRepo(repo, true);
-
-  const cwd = process.cwd();
-  process.chdir(repoDir);
-
-  if (!repo.targetDir) {
-    repo.targetDir = '.';
+  if (argv.sourceDir) {
+    // Remove trailing slash, this is useful on OS X and some Linux systems (like CentOS),
+    // because they will automatic add trailing slash when completing a directory name by default
+    if (argv.sourceDir !== '/' && argv.sourceDir.endsWith('/')) {
+      argv.sourceDir = argv.sourceDir.slice(0, -1);
+    }
+    argv.include.push(argv.sourceDir);
   }
-  [repo.sourceDir, repo.targetDir] = [repo.targetDir, repo.sourceDir];
-  repo.target = cwd;
 
-  const sync = new Sync();
-  await sync.sync(Object.assign({
-    $0: '',
-    _: []
-  }, repo));
+  const repos = config.filterReposBySourceDir(argv.include, argv.exclude);
+  for (const repo of repos) {
+    try {
+      log.info(`Update to ${theme.info(repo.sourceDir)}`);
 
-  process.chdir(cwd);
+      const cwd = process.cwd();
+      const repoDir = await config.getRepoDirByRepo(repo, true);
+      process.chdir(repoDir);
+
+      if (!repo.targetDir) {
+        repo.targetDir = '.';
+      }
+      [repo.sourceDir, repo.targetDir] = [repo.targetDir, repo.sourceDir];
+      repo.target = cwd;
+
+      const sync = new Sync();
+      await sync.sync(Object.assign({
+        $0: '',
+        _: []
+      }, repo));
+
+      process.chdir(cwd);
+    } catch (e) {
+      process.exitCode = 1;
+      log.error(`Sync fail: ${e.message}`);
+    }
+  }
+
+  log.info('Done!');
 }
 
 export default command;
