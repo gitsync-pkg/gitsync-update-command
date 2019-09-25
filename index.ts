@@ -60,7 +60,7 @@ command.handler = async (argv: UpdateArguments) => {
 
   for (const repo of repos) {
     try {
-      log.info(`Update to ${theme.info(repo.sourceDir)}`);
+      log.info(`Update from ${theme.info(repo.sourceDir)}`);
 
       const cwd = process.cwd();
       const repoDir = await config.getRepoDirByRepo(repo, true);
