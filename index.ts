@@ -54,6 +54,10 @@ command.handler = async (argv: UpdateArguments) => {
   }
 
   const repos = config.filterReposBySourceDir(argv.include, argv.exclude);
+
+  // Tell `gitsync post-commit` to skip
+  process.env.GITSYNC_UPDATE = '1';
+
   for (const repo of repos) {
     try {
       log.info(`Update to ${theme.info(repo.sourceDir)}`);
@@ -80,6 +84,8 @@ command.handler = async (argv: UpdateArguments) => {
       log.error(`Sync fail: ${e.message}`);
     }
   }
+
+  delete process.env.GITSYNC_UPDATE;
 
   log.info('Done!');
 }
