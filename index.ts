@@ -73,10 +73,7 @@ command.handler = async (argv: UpdateArguments) => {
       repo.target = cwd;
 
       const sync = new Sync();
-      await sync.sync(Object.assign({
-        $0: '',
-        _: []
-      }, repo));
+      await sync.sync(repo);
 
       process.chdir(cwd);
     } catch (e) {
