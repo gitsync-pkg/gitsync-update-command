@@ -8,6 +8,7 @@ interface UpdateArguments extends Arguments {
   sourceDir: string
   include: string[]
   exclude: string[]
+  yes?: boolean
 }
 
 let command: CommandModule = {
@@ -34,6 +35,11 @@ command.builder = {
     describe: 'Exclude source directory matching the given glob',
     default: [],
     type: 'array',
+  },
+  yes: {
+    describe: 'Whether to skip confirm or not',
+    alias: 'y',
+    type: 'boolean',
   }
 };
 
@@ -71,6 +77,7 @@ command.handler = async (argv: UpdateArguments) => {
       }
       [repo.sourceDir, repo.targetDir] = [repo.targetDir, repo.sourceDir];
       repo.target = cwd;
+      repo.yes = argv.yes;
 
       const sync = new Sync();
       await sync.sync(repo);
