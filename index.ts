@@ -76,6 +76,7 @@ command.handler = async (argv: UpdateArguments) => {
         repo.targetDir = '.';
       }
       [repo.sourceDir, repo.targetDir] = [repo.targetDir, repo.sourceDir];
+      [repo.addTagPrefix, repo.removeTagPrefix] = [repo.removeTagPrefix, repo.addTagPrefix];
       repo.target = cwd;
       repo.yes = argv.yes;
 
