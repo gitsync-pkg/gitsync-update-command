@@ -79,6 +79,7 @@ command.handler = async (argv: UpdateArguments) => {
       [repo.addTagPrefix, repo.removeTagPrefix] = [repo.removeTagPrefix, repo.addTagPrefix];
       repo.target = cwd;
       repo.yes = argv.yes;
+      repo.plugins = config.getRepoPlugins(repo.plugins);
 
       const sync = new Sync();
       await sync.sync(repo);
