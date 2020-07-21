@@ -1,6 +1,6 @@
 {
   "name": "@gitsync/update-command",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Sync the commits from relative repository to current repository.",
   "keywords": [
     "gitsync",
@@ -28,8 +28,8 @@
     "prepare": "yarn build"
   },
   "dependencies": {
-    "@gitsync/config": "^0.5.0",
-    "@gitsync/sync": "^0.5.1"
+    "@gitsync/config": "^0.6.0",
+    "@gitsync/sync": "^0.6.0"
   },
   "devDependencies": {
     "@gitsync/test": "^0.5.0",
